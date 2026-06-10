@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Аль-Баракат — Исламская Рассрочка</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f4f0; min-height: 100vh; padding: 16px; }
+  .container { max-width: 680px; margin: 0 auto; }
+
+  .hdr { background: #0d2b1a; padding: 22px 20px; text-align: center; border-radius: 12px; margin-bottom: 14px; }
+  .badge { display: inline-block; background: rgba(212,175,55,0.18); border: 1px solid #d4af37; color: #d4af37; font-size: 10px; letter-spacing: 2px; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; text-transform: uppercase; }
+  .hdr h1 { color: #d4af37; font-size: 22px; font-weight: 700; }
+  .hdr h1 span { color: #fff; }
+  .hdr p { color: rgba(255,255,255,0.6); font-size: 11px; margin-top: 4px; }
+
+  .tabs { display: flex; gap: 5px; margin-bottom: 12px; }
+  .tab { flex: 1; padding: 9px 2px; text-align: center; font-size: 11px; font-weight: 600; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; background: #fff; color: #666; transition: all 0.2s; }
+  .tab:hover { border-color: #1a472a; color: #1a472a; }
+  .tab.active { background: #1a472a; color: #d4af37; border-color: #1a472a; }
+
+  .sec { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+  .st { font-size: 12px; font-weight: 600; color: #1a472a; margin-bottom: 11px; display: flex; align-items: center; gap: 6px; }
+
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 9px; }
+  .full { grid-column: 1 / -1; }
+  .fg { display: flex; flex-direction: column; gap: 4px; }
+  label { font-size: 11px; color: #888; }
+  input, select { padding: 8px 9px; font-size: 13px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f7; color: #222; width: 100%; outline: none; transition: border 0.2s; }
+  input:focus, select:focus { border-color: #1a472a; }
+
+  .yg { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin-top: 5px; }
+  .yb { padding: 9px 2px; text-align: center; font-size: 12px; font-weight: 600; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; background: #f9f9f7; color: #666; transition: all 0.2s; }
+  .yb:hover { border-color: #1a472a; color: #1a472a; }
+  .yb.active { background: #1a472a; color: #d4af37; border-color: #1a472a; }
+
+  .mbox { display: flex; align-items: center; gap: 8px; margin-top: 10px; background: #f9f9f7; border-radius: 8px; padding: 9px 12px; border: 1px solid #eee; }
+  .mbox label { margin: 0; white-space: nowrap; font-size: 12px; }
+  .mbox input { width: 80px; font-size: 15px; font-weight: 700; text-align: center; }
+  .mbox .pct { font-size: 15px; font-weight: 700; color: #1a472a; }
+  .hint { font-size: 10px; color: #aaa; margin-left: 4px; }
+
+  .btn-main { width: 100%; padding: 13px; background: #1a472a; color: #d4af37; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; margin-top: 4px; transition: opacity 0.2s; }
+  .btn-main:hover { opacity: 0.88; }
+
+  .rg { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 10px; }
+  .rc { background: #f4f4f0; border-radius: 8px; padding: 12px; text-align: center; }
+  .rc .lb { font-size: 10px; color: #888; margin-bottom: 4px; }
+  .rc .vl { font-size: 16px; font-weight: 700; color: #1a472a; }
+  .rc.hi { background: #1a472a; }
+  .rc.hi .lb { color: rgba(255,255,255,0.7); }
+  .rc.hi .vl { color: #d4af37; font-size: 18px; }
+
+  .irow { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+  .irow:last-child { border-bottom: none; }
+  .irow .k { color: #888; }
+  .irow .v { font-weight: 600; color: #222; }
+
+  .pg { display: none; }
+  .pg.active { display: block; }
+  .empty { text-align: center; padding: 36px 20px; color: #aaa; font-size: 13px; }
+
+  .ptable { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed; }
+  .ptable th { background: #1a472a; color: #d4af37; padding: 7px 8px; text-align: left; font-weight: 600; }
+  .ptable td { padding: 7px 8px; border-bottom: 1px solid #f0f0f0; color: #333; }
+  .ptable tr:nth-child(even) td { background: #f9f9f7; }
+
+  .ctable { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed; }
+  .ctable th { background: #1a472a; color: #d4af37; padding: 7px 8px; text-align: center; font-weight: 600; }
+  .ctable td { padding: 7px 8px; border-bottom: 1px solid #f0f0f0; color: #333; text-align: center; }
+  .ctable tr:nth-child(even) td { background: #f9f9f7; }
+  .ctable .active-yr td { background: rgba(26,71,42,0.08); font-weight: 600; }
+
+  .warn { font-size: 11px; color: #b45309; background: #fef3c7; padding: 7px 10px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #fde68a; }
+
+  .copy-btn { display: flex; align-items: center; gap: 6px; padding: 11px 14px; background: #1a472a; color: #d4af37; font-size: 13px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; width: 100%; justify-content: center; transition: opacity 0.2s; }
+  .copy-btn:hover { opacity: 0.88; }
+
+  .obj-card { background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 13px; margin-bottom: 9px; }
+  .obj-card.best { border: 2px solid #1a472a; }
+  .obj-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .obj-num { font-size: 12px; font-weight: 700; color: #1a472a; }
+  .best-badge { font-size: 10px; background: #1a472a; color: #d4af37; padding: 3px 8px; border-radius: 20px; }
+  .del-btn { font-size: 11px; color: #888; background: none; border: 1px solid #ddd; border-radius: 8px; padding: 4px 9px; cursor: pointer; }
+  .del-btn:hover { border-color: #e74c3c; color: #e74c3c; }
+
+  .add-obj-btn { width: 100%; padding: 11px; background: #f9f9f7; color: #1a472a; font-size: 13px; font-weight: 600; border: 1.5px dashed #1a472a; border-radius: 8px; cursor: pointer; margin-bottom: 10px; transition: background 0.2s; }
+  .add-obj-btn:hover { background: #eef5f0; }
+
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .comp-table th { background: #1a472a; color: #d4af37; padding: 8px 7px; text-align: left; font-weight: 600; }
+  .comp-table td { padding: 8px 7px; border-bottom: 1px solid #f0f0f0; color: #333; vertical-align: top; }
+  .comp-table .best-row td { background: rgba(26,71,42,0.07); }
+  .comp-table .best-row td:first-child { border-left: 3px solid #1a472a; }
+  .best-label { font-size: 10px; background: #1a472a; color: #d4af37; padding: 2px 7px; border-radius: 10px; display: inline-block; margin-top: 3px; }
+
+  @media (max-width: 480px) {
+    .g3 { grid-template-columns: 1fr 1fr; }
+    .yg { grid-template-columns: repeat(3, 1fr); }
+    .rg { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="hdr">
+  <div class="badge">Шариатский стандарт · Мурабаха</div>
+  <h1>Калькулятор <span>«Аль-</span>Баракат»</h1>
+  <p>Профессиональный инструмент риелтора · Чечня</p>
+  <div id="hdr-agent" style="display:block;margin-top:10px;padding-top:10px;border-top:1px solid rgba(212,175,55,0.3)">
+    <div style="font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px">Риелтор</div>
+    <div id="hdr-agent-name" style="color:#d4af37;font-size:20px;font-weight:700;letter-spacing:2px;font-family:'Playfair Display', Georgia, serif;text-transform:uppercase">Хадижа</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" id="tab-calc" onclick="showTab('calc')">Калькулятор</div>
+  <div class="tab" id="tab-sched" onclick="showTab('sched')">График</div>
+  <div class="tab" id="tab-compare" onclick="showTab('compare')">Сроки</div>
+  <div class="tab" id="tab-objects" onclick="showTab('objects')">Подбор</div>
+  <div class="tab" id="tab-contacts" onclick="showTab('contacts')">Контакты</div>
+</div>
+
+<!-- КАЛЬКУЛЯТОР -->
+<div id="pg-calc" class="pg active">
+  <div class="sec">
+    <div class="st">🏢 Характеристики объекта</div>
+    <div class="g2">
+      <div class="fg full"><label>Наименование объекта</label><input type="text" id="obj-name" placeholder="ЖК «Мечта», кв. 45"></div>
+      <div class="g3 full">
+        <div class="fg"><label>Площадь (кв.м)</label><input type="number" id="area" placeholder="65" min="0"></div>
+        <div class="fg"><label>Цена за кв.м (₽)</label><input type="number" id="psqm" placeholder="85000" min="0"></div>
+        <div class="fg"><label>Итого стоимость (₽)</label><input type="number" id="total" placeholder="—" min="0"></div>
+      </div>
+      <div class="fg"><label>Этаж</label><input type="number" id="floor" placeholder="5" min="1"></div>
+      <div class="fg"><label>Вид из окна</label>
+        <select id="view">
+          <option>На проспект</option><option>Во двор</option><option>В сторону мечети</option>
+          <option>На улицу</option><option>Грозный сити</option><option>Грозный молл</option>
+          <option>На ЖД вокзал</option><option>В школу</option><option>На садик</option><option>На парк</option>
+        </select>
+      </div>
+      <div class="fg full"><label>Место / ЖК</label><input type="text" id="location" placeholder="Название места"></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="st">📅 Срок рассрочки</div>
+    <label>Выберите срок</label>
+    <div class="yg">
+      <div class="yb active" onclick="pickYear(1,this)">1 год</div>
+      <div class="yb" onclick="pickYear(2,this)">2 года</div>
+      <div class="yb" onclick="pickYear(3,this)">3 года</div>
+      <div class="yb" onclick="pickYear(4,this)">4 года</div>
+      <div class="yb" onclick="pickYear(5,this)">5 лет</div>
+      <div class="yb" onclick="pickYear(6,this)">6 лет</div>
+    </div>
+    <div class="mbox">
+      <label>Наценка:</label>
+      <input type="number" id="markup" placeholder="0" min="0" max="200">
+      <span class="pct">%</span>
+      <span class="hint">вводит риелтор / клиент</span>
+    </div>
+    <div class="sec" style="margin-top:10px;background:#f9f9f7;border:1px solid #e0ede5">
+      <div class="st" style="margin-bottom:8px">💰 Первоначальный взнос</div>
+      <div class="g3">
+        <div class="fg">
+          <label>Цена кв.м для взноса (₽)</label>
+          <input type="number" id="down-psqm" placeholder="5000" min="0">
+        </div>
+        <div class="fg">
+          <label>Площадь (кв.м)</label>
+          <input type="number" id="down-area" placeholder="60" min="0">
+        </div>
+        <div class="fg">
+          <label>Итого взнос (₽)</label>
+          <input type="number" id="down" placeholder="—" min="0" style="font-weight:700;color:#1a472a">
+        </div>
+      </div>
+      <p style="font-size:10px;color:#aaa;margin-top:6px">Взнос = цена кв.м для взноса × площадь. Например: 5 000 × 60 = 300 000 ₽</p>
+    </div>
+    <div class="g2" style="margin-top:0">
+      <div class="fg"><label>Досрочное погашение (₽)</label><input type="number" id="early" placeholder="0" min="0"></div>
+    </div>
+    <div id="min-warn" style="display:none;margin-top:8px" class="warn">
+      ⚠️ Рекомендуемый минимальный взнос: <span id="min-warn-amt"></span> (20% стоимости)
+    </div>
+  </div>
+
+  <button class="btn-main" onclick="calculate()">Рассчитать рассрочку</button>
+
+  <div id="results" style="display:none;margin-top:12px">
+    <div class="sec">
+      <div class="st">📊 Результат</div>
+      <div class="rg">
+        <div class="rc"><div class="lb">Стоимость объекта</div><div class="vl" id="r-base">—</div></div>
+        <div class="rc"><div class="lb">Наценка (<span id="r-pct">0</span>%)</div><div class="vl" id="r-markup">—</div></div>
+        <div class="rc hi"><div class="lb">Ежемесячный платёж</div><div class="vl" id="r-monthly">—</div></div>
+        <div class="rc"><div class="lb">Итого с наценкой</div><div class="vl" id="r-total">—</div></div>
+      </div>
+      <div id="early-block" style="display:none">
+        <div class="irow"><span class="k">После досрочного погашения осталось</span><span class="v" id="r-remain" style="color:#1a472a"></span></div>
+        <div class="irow"><span class="k">Новый ежемесячный платёж</span><span class="v" id="r-new-monthly" style="color:#1a472a"></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ГРАФИК -->
+<div id="pg-sched" class="pg">
+  <div id="sched-body"><div class="empty">📋 Сначала выполните расчёт</div></div>
+</div>
+
+<!-- СРАВНЕНИЕ СРОКОВ -->
+<div id="pg-compare" class="pg">
+  <div id="compare-body"><div class="empty">📊 Сначала выполните расчёт</div></div>
+</div>
+
+<!-- ПОДБОР ОБЪЕКТОВ -->
+<div id="pg-objects" class="pg">
+  <div class="sec">
+    <div class="st">🔍 Подбор и сравнение объектов</div>
+    <p style="font-size:11px;color:#aaa;margin-bottom:10px">Добавьте до 4 объектов — калькулятор выделит самый бюджетный вариант</p>
+    <div id="obj-list"></div>
+    <button class="add-obj-btn" id="add-obj-btn" onclick="addObject()">+ Добавить объект</button>
+    <button class="btn-main" onclick="compareObjects()">⚖️ Сравнить объекты</button>
+  </div>
+  <div id="obj-result"></div>
+</div>
+
+<!-- КОНТАКТЫ -->
+<div id="pg-contacts" class="pg">
+  <div class="sec">
+    <div class="st">👤 Риелтор</div>
+    <div class="g2">
+      <div class="fg full"><label>ФИО</label><input type="text" id="a-name" placeholder="Имя риелтора" value="Хадижа" oninput="updateAgentHeader()"></div>
+      <div class="fg"><label>WhatsApp</label><input type="text" id="a-wa" placeholder="+7 928 000 00 00"></div>
+      <div class="fg"><label>Telegram</label><input type="text" id="a-tg" placeholder="@username"></div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="st">👥 Клиент</div>
+    <div class="g2">
+      <div class="fg full"><label>ФИО</label><input type="text" id="c-name" placeholder="Имя клиента"></div>
+      <div class="fg"><label>WhatsApp</label><input type="text" id="c-wa" placeholder="+7 928 000 00 00"></div>
+      <div class="fg"><label>Telegram</label><input type="text" id="c-tg" placeholder="@username"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+var selYear = 1, lastCalc = null, objCount = 0, objects = [];
+
+function showTab(n) {
+  ['calc','sched','compare','objects','contacts'].forEach(function(x) {
+    document.getElementById('pg-'+x).classList.remove('active');
+    document.getElementById('tab-'+x).classList.remove('active');
+  });
+  document.getElementById('pg-'+n).classList.add('active');
+  document.getElementById('tab-'+n).classList.add('active');
+}
+
+function pickYear(y, el) {
+  selYear = y;
+  document.querySelectorAll('.yb').forEach(function(b) { b.classList.remove('active'); });
+  el.classList.add('active');
+}
+
+document.getElementById('area').addEventListener('input', autoTotal);
+document.getElementById('psqm').addEventListener('input', autoTotal);
+document.getElementById('down').addEventListener('input', checkMin);
+document.getElementById('total').addEventListener('input', checkMin);
+document.getElementById('down-psqm').addEventListener('input', autoDown);
+document.getElementById('down-area').addEventListener('input', autoDown);
+
+function autoTotal() {
+  var a = parseFloat(document.getElementById('area').value);
+  var p = parseFloat(document.getElementById('psqm').value);
+  if (a > 0 && p > 0) { document.getElementById('total').value = Math.round(a * p); }
+  // Подставить площадь квартиры в поле площади взноса если пусто
+  var da = document.getElementById('down-area');
+  if (!da.value && a > 0) { da.value = a; autoDown(); }
+  checkMin();
+}
+
+function autoDown() {
+  var dp = parseFloat(document.getElementById('down-psqm').value);
+  var da = parseFloat(document.getElementById('down-area').value);
+  if (dp > 0 && da > 0) {
+    document.getElementById('down').value = Math.round(dp * da);
+    checkMin();
+  }
+}
+
+function checkMin() {
+  var base = parseFloat(document.getElementById('total').value) || 0;
+  var down = parseFloat(document.getElementById('down').value) || 0;
+  var w = document.getElementById('min-warn');
+  if (base > 0 && down < base * 0.2) {
+    document.getElementById('min-warn-amt').textContent = fmt(base * 0.2);
+    w.style.display = 'block';
+  } else { w.style.display = 'none'; }
+}
+
+function fmt(n) { return Math.round(n).toLocaleString('ru-RU') + ' ₽'; }
+function ylab(y) { return y + ' ' + (y === 1 ? 'год' : y < 5 ? 'года' : 'лет'); }
+function row(k, v) { return '<div class="irow"><span class="k">' + k + '</span><span class="v">' + v + '</span></div>'; }
+
+function calculate() {
+  var base = parseFloat(document.getElementById('total').value);
+  if (!base || base <= 0) {
+    var a = parseFloat(document.getElementById('area').value);
+    var p = parseFloat(document.getElementById('psqm').value);
+    if (a > 0 && p > 0) { base = a * p; document.getElementById('total').value = Math.round(base); }
+  }
+  if (!base || base <= 0) { alert('Введите стоимость объекта'); return; }
+  var markup = parseFloat(document.getElementById('markup').value) || 0;
+  var down = parseFloat(document.getElementById('down').value) || 0;
+  var early = parseFloat(document.getElementById('early').value) || 0;
+  var years = selYear;
+  var markupAmt = base * markup / 100;
+  var withMarkup = base + markupAmt;
+  var financed = withMarkup - down;
+  if (financed < 0) financed = 0;
+  var months = years * 12;
+  var monthly = financed / months;
+  lastCalc = { base:base, markup:markup, markupAmt:markupAmt, withMarkup:withMarkup, down:down, early:early, years:years, months:months, monthly:monthly, financed:financed };
+  document.getElementById('r-base').textContent = fmt(base);
+  document.getElementById('r-pct').textContent = markup;
+  document.getElementById('r-markup').textContent = fmt(markupAmt);
+  document.getElementById('r-total').textContent = fmt(withMarkup);
+  document.getElementById('r-monthly').textContent = fmt(monthly);
+  var eb = document.getElementById('early-block');
+  if (early > 0 && early < financed) {
+    var remain = financed - early;
+    document.getElementById('r-remain').textContent = fmt(remain);
+    document.getElementById('r-new-monthly').textContent = fmt(remain / months);
+    eb.style.display = 'block';
+    lastCalc.remain = remain; lastCalc.newMonthly = remain / months;
+  } else { eb.style.display = 'none'; }
+  document.getElementById('results').style.display = 'block';
+  buildSchedule(); buildCompare();
+}
+
+function buildSchedule() {
+  var c = lastCalc; if (!c) return;
+  var on = document.getElementById('obj-name').value || '—';
+  var loc = document.getElementById('location').value || '—';
+  var fl = document.getElementById('floor').value || '—';
+  var vw = document.getElementById('view').value;
+  var an = document.getElementById('a-name').value || '—';
+  var awa = document.getElementById('a-wa').value || '—';
+  var atg = document.getElementById('a-tg').value || '—';
+  var cn = document.getElementById('c-name').value || '—';
+  var cwa = document.getElementById('c-wa').value || '—';
+  var ctg = document.getElementById('c-tg').value || '—';
+  var useM = (c.early > 0 && c.remain) ? c.newMonthly : c.monthly;
+  var bal = c.financed - (c.early > 0 ? c.early : 0); if (bal < 0) bal = 0;
+  var now = new Date(); var rows = '';
+  for (var i = 1; i <= c.months; i++) {
+    var d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+    var ds = d.toLocaleDateString('ru-RU', {month:'short', year:'numeric'});
+    bal = bal - useM; if (bal < 0) bal = 0;
+    rows += '<tr><td>' + i + '</td><td>' + ds + '</td><td>' + fmt(useM) + '</td><td>' + fmt(bal) + '</td></tr>';
+  }
+  var txt = 'АЛЬ-БАРАКАТ — РАСЧЁТ РАССРОЧКИ\n\nОбъект: '+on+'\nМесто: '+loc+'\nЭтаж: '+fl+'\nВид: '+vw+'\n\nСтоимость: '+fmt(c.base)+'\nНаценка ('+c.markup+'%): '+fmt(c.markupAmt)+'\nИтого: '+fmt(c.withMarkup)+'\nВзнос: '+fmt(c.down)+'\nСрок: '+ylab(c.years)+'\nПлатёж/мес: '+fmt(c.monthly)+'\n\nРиелтор: '+an+' | WA: '+awa+' | TG: '+atg+'\nКлиент: '+cn+' | WA: '+cwa+' | TG: '+ctg;
+  document.getElementById('sched-body').innerHTML =
+    '<div class="sec"><div class="st">📄 Данные объекта</div>'+row('Объект',on)+row('Место',loc)+row('Этаж',fl)+row('Вид',vw)+'</div>'+
+    '<div class="sec"><div class="st">🧮 Итоги расчёта</div>'+row('Стоимость',fmt(c.base))+row('Наценка ('+c.markup+'%)',fmt(c.markupAmt))+row('Итого',fmt(c.withMarkup))+row('Взнос',fmt(c.down))+row('Срок',ylab(c.years))+'<div class="irow"><span class="k">Платёж/мес</span><span class="v" style="color:#1a472a;font-size:14px">'+fmt(c.monthly)+'</span></div></div>'+
+    '<div class="sec"><div class="st">📋 График платежей по месяцам</div><div style="overflow-x:auto"><table class="ptable"><thead><tr><th style="width:32px">#</th><th>Дата</th><th>Платёж</th><th>Остаток</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>'+
+    '<div class="sec"><div class="st">👥 Контакты</div>'+row('Риелтор',an)+row('WhatsApp',awa)+row('Telegram',atg)+row('Клиент',cn)+row('WhatsApp',cwa)+row('Telegram',ctg)+'</div>'+
+    '<button class="copy-btn" onclick="copyCalc()">📋 Скопировать расчёт для отправки</button>'+
+    '<textarea id="copy-text" style="position:absolute;left:-9999px">'+txt+'</textarea>';
+}
+
+function buildCompare() {
+  var c = lastCalc; if (!c) return;
+  var rows = '';
+  for (var y = 1; y <= 6; y++) {
+    var fin = c.withMarkup - c.down; if (fin < 0) fin = 0;
+    var mo = fin / (y * 12);
+    var cl = y === c.years ? 'active-yr' : '';
+    rows += '<tr class="'+cl+'"><td>'+ylab(y)+'</td><td>'+fmt(mo)+'</td><td>'+fmt(mo*y*12)+'</td><td>'+fmt(mo*y*12-c.base)+'</td></tr>';
+  }
+  document.getElementById('compare-body').innerHTML =
+    '<div class="sec"><div class="st">📊 Сравнение всех сроков</div>'+
+    '<p style="font-size:11px;color:#aaa;margin-bottom:8px">Выделен выбранный вами срок</p>'+
+    '<div style="overflow-x:auto"><table class="ctable"><thead><tr><th>Срок</th><th>Платёж/мес</th><th>Итого выплат</th><th>Переплата</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
+}
+
+function copyCalc() {
+  var t = document.getElementById('copy-text');
+  if (!t) return; t.select();
+  try { document.execCommand('copy'); alert('Скопировано! Вставьте в WhatsApp или Telegram.'); }
+  catch(e) { alert('Не удалось скопировать автоматически.'); }
+}
+
+function addObject() {
+  if (objCount >= 4) { alert('Максимум 4 объекта'); return; }
+  objCount++; var id = 'obj' + objCount; objects.push(id);
+  var div = document.createElement('div');
+  div.className = 'obj-card'; div.id = 'card-' + id;
+  div.innerHTML =
+    '<div class="obj-header"><span class="obj-num">🏢 Объект ' + objCount + '</span><button class="del-btn" onclick="removeObject(\''+id+'\')">Удалить</button></div>'+
+    '<div class="g2">'+
+    '<div class="fg full"><label>Название объекта</label><input type="text" id="'+id+'-name" placeholder="ЖК «Название»"></div>'+
+    '<div class="fg"><label>Площадь (кв.м)</label><input type="number" id="'+id+'-area" placeholder="60" min="0" oninput="calcObjTotal(\''+id+'\')"></div>'+
+    '<div class="fg"><label>Цена за кв.м (₽)</label><input type="number" id="'+id+'-psqm" placeholder="80000" min="0" oninput="calcObjTotal(\''+id+'\')"></div>'+
+    '<div class="fg"><label>Итого стоимость (₽)</label><input type="number" id="'+id+'-total" placeholder="—" min="0"></div>'+
+    '<div class="fg"><label>Этаж</label><input type="number" id="'+id+'-floor" placeholder="3" min="1"></div>'+
+    '<div class="fg"><label>Вид из окна</label><select id="'+id+'-view"><option>На проспект</option><option>Во двор</option><option>В сторону мечети</option><option>На улицу</option><option>Грозный сити</option><option>Грозный молл</option><option>На ЖД вокзал</option><option>В школу</option><option>На садик</option><option>На парк</option></select></div>'+
+    '<div class="fg"><label>Наценка (%)</label><input type="number" id="'+id+'-markup" placeholder="0" min="0" max="200"></div>'+
+    '<div class="fg"><label>Срок (лет)</label><select id="'+id+'-years"><option value="1">1 год</option><option value="2">2 года</option><option value="3">3 года</option><option value="4" selected>4 года</option><option value="5">5 лет</option><option value="6">6 лет</option></select></div>'+
+    '<div class="fg"><label>Первонач. взнос (₽)</label><input type="number" id="'+id+'-down" placeholder="0" min="0"></div>'+
+    '</div>';
+  document.getElementById('obj-list').appendChild(div);
+  if (objCount >= 4) document.getElementById('add-obj-btn').style.display = 'none';
+}
+
+function calcObjTotal(id) {
+  var a = parseFloat(document.getElementById(id+'-area').value);
+  var p = parseFloat(document.getElementById(id+'-psqm').value);
+  if (a > 0 && p > 0) document.getElementById(id+'-total').value = Math.round(a * p);
+}
+
+function removeObject(id) {
+  var idx = objects.indexOf(id); if (idx > -1) objects.splice(idx, 1);
+  var card = document.getElementById('card-' + id); if (card) card.remove();
+  objCount--;
+  document.getElementById('add-obj-btn').style.display = 'block';
+}
+
+function compareObjects() {
+  if (objects.length < 2) { alert('Добавьте минимум 2 объекта для сравнения'); return; }
+  var data = [];
+  for (var i = 0; i < objects.length; i++) {
+    var id = objects[i];
+    var base = parseFloat(document.getElementById(id+'-total').value) || 0;
+    var area = parseFloat(document.getElementById(id+'-area').value) || 0;
+    var psqm = parseFloat(document.getElementById(id+'-psqm').value) || 0;
+    if (!base && area && psqm) base = area * psqm;
+    if (!base) continue;
+    var markup = parseFloat(document.getElementById(id+'-markup').value) || 0;
+    var years = parseInt(document.getElementById(id+'-years').value) || 1;
+    var down = parseFloat(document.getElementById(id+'-down').value) || 0;
+    var name = document.getElementById(id+'-name').value || ('Объект ' + (i+1));
+    var floor = document.getElementById(id+'-floor').value || '—';
+    var view = document.getElementById(id+'-view').value;
+    var markupAmt = base * markup / 100;
+    var total = base + markupAmt;
+    var financed = total - down; if (financed < 0) financed = 0;
+    var monthly = financed / (years * 12);
+    data.push({ name:name, base:base, markup:markup, markupAmt:markupAmt, total:total, down:down, years:years, monthly:monthly, floor:floor, view:view });
+  }
+  if (data.length < 2) { alert('Заполните данные минимум для 2 объектов'); return; }
+  var minIdx = 0;
+  for (var j = 1; j < data.length; j++) { if (data[j].monthly < data[minIdx].monthly) minIdx = j; }
+  var rows = '';
+  for (var k = 0; k < data.length; k++) {
+    var d = data[k]; var isBest = k === minIdx;
+    var cls = isBest ? 'best-row' : '';
+    var bb = isBest ? '<br><span class="best-label">Выгоднее всего</span>' : '';
+    rows += '<tr class="'+cls+'"><td><strong>'+d.name+'</strong>'+bb+'</td><td>'+fmt(d.base)+'</td><td>'+d.markup+'%</td><td>'+fmt(d.total)+'</td><td>'+ylab(d.years)+'</td><td style="'+(isBest?'color:#1a472a;font-weight:700':'')+'">'+fmt(d.monthly)+'</td></tr>';
+  }
+  var best = data[minIdx];
+  var an = document.getElementById('a-name').value || '—';
+  var cn = document.getElementById('c-name').value || '—';
+  var awa = document.getElementById('a-wa').value || '—';
+  var ctg = document.getElementById('c-tg').value || '—';
+  var txtLines = 'АЛЬ-БАРАКАТ — СРАВНЕНИЕ ОБЪЕКТОВ\n\n';
+  for (var m = 0; m < data.length; m++) {
+    var dd = data[m];
+    txtLines += (m === minIdx ? '★ ' : '') + dd.name + '\n  Стоимость: '+fmt(dd.base)+' | Наценка: '+dd.markup+'%\n  Срок: '+ylab(dd.years)+' | Платёж: '+fmt(dd.monthly)+'\n\n';
+  }
+  txtLines += 'Рекомендуется: '+best.name+'\nПлатёж: '+fmt(best.monthly)+'\n\nРиелтор: '+an+' | TG: '+ctg+'\nКлиент: '+cn;
+  document.getElementById('obj-result').innerHTML =
+    '<div class="sec"><div class="st">⚖️ Результат сравнения</div>'+
+    '<p style="font-size:11px;color:#aaa;margin-bottom:9px">Самый бюджетный вариант выделен зелёным</p>'+
+    '<div style="overflow-x:auto"><table class="comp-table"><thead><tr><th>Объект</th><th>Стоимость</th><th>Наценка</th><th>Итого</th><th>Срок</th><th>Платёж/мес</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>'+
+    '<div class="sec" style="border:2px solid #1a472a"><div class="st">⭐ Рекомендуем клиенту</div>'+
+    row('Объект',best.name)+row('Стоимость',fmt(best.base))+row('Наценка',best.markup+'%')+row('Срок',ylab(best.years))+'<div class="irow"><span class="k">Ежемесячный платёж</span><span class="v" style="color:#1a472a;font-size:15px;font-weight:700">'+fmt(best.monthly)+'</span></div></div>'+
+    '<button class="copy-btn" onclick="copyCompare()">📋 Скопировать сравнение для клиента</button>'+
+    '<textarea id="copy-compare" style="position:absolute;left:-9999px">'+txtLines+'</textarea>';
+}
+
+function copyCompare() {
+  var t = document.getElementById('copy-compare');
+  if (!t) return; t.select();
+  try { document.execCommand('copy'); alert('Сравнение скопировано! Отправьте клиенту.'); }
+  catch(e) { alert('Не удалось скопировать автоматически.'); }
+}
+
+function updateAgentHeader() {
+  var name = document.getElementById('a-name').value.trim();
+  var block = document.getElementById('hdr-agent');
+  var nameEl = document.getElementById('hdr-agent-name');
+  if (name) {
+    nameEl.textContent = name;
+    block.style.display = 'block';
+  } else {
+    block.style.display = 'none';
+  }
+}
+</script>
+</body>
+</html>
